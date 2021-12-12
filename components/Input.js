@@ -17,6 +17,7 @@ import {
 } from "@firebase/firestore";
 import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
+import { useSession } from "next-auth/react";
 
 function Input() {
   const [input, setInput] = useState("");
@@ -24,16 +25,17 @@ function Input() {
   const [showEmojis, setShowEmojis] = useState(false);
   const [loading, setLoading] = useState(false);
   const filePickerRef = useRef(null);
+  const { data: session } = useSession();
 
   const sendPost = async () =>{
     if (loading) return;
     setLoading(true);
 
     const docRef = await addDoc(collection(db, "posts"),{
-      // id: session.user.uid,
-      // username: session.user.name,
-      // userImg: session.user.image,
-      // tag: session.user.tag,
+      id: session.user.uid,
+      username: session.user.name,
+      userImg: session.user.image,
+      tag: session.user.tag,
       text: input,
       timestamp: serverTimestamp()
     });
@@ -81,7 +83,7 @@ function Input() {
       }`}
     >
       <img
-        src="https://lh3.googleusercontent.com/ogw/ADea4I6YEoGfUURjYaLw7E3xBhBUKtdkvdAWIo_ZhYW2Ng=s64-c-mo"
+        src={session.user.image}
         className="h-11 w-11 rounded-full cursor-pointer"
       />
 

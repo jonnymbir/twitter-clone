@@ -21,4 +21,6 @@ export default NextAuth({
       return session;
     },
   },
+  // This is where you add the secret (I explained this in the last part of my video)
+  secret: process.env.JWT_SECRET,
 });
